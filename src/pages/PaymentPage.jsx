@@ -8,7 +8,7 @@ const PaymentPage = () => {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post("/transaction", {
+      const response = await axios.post("/api/transaction", {
         totalAmount: amount,
         type: type,
       });
