@@ -2,8 +2,8 @@ import midtransClient from "midtrans-client";
 
 const snap = new midtransClient.Snap({
   isProduction: false, // Ganti ke `true` jika menggunakan environment production
-  serverKey: "YOUR_SERVER_KEY", // Ganti dengan server key Midtrans Anda
-  clientKey: "YOUR_CLIENT_KEY", // Ganti dengan client key Midtrans Anda
+  serverKey: "SB-Mid-server-wkTyIguA0OaTZ_DeSy13Iyrm", // Ganti dengan server key Midtrans Anda
+  clientKey: "SB-Mid-client--jucMGGRSNhaA_C1", // Ganti dengan client key Midtrans Anda
 });
 
 export default async function handler(req, res) {
