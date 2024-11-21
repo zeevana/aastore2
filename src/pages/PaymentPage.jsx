@@ -1,7 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
- // Import file CSS untuk halaman ini
 
 const PaymentPage = () => {
   const location = useLocation();
@@ -9,7 +8,7 @@ const PaymentPage = () => {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post("/src/api/transaction", {
+      const response = await axios.post("/api/transaction", {
         totalAmount: amount,
         type: type,
       });
@@ -31,7 +30,7 @@ const PaymentPage = () => {
   React.useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
-    script.setAttribute("data-client-key", "SB-Mid-client--jucMGGRSNhaA_C1"); // Ganti dengan client key Midtrans Anda
+    script.setAttribute("data-client-key", "SB-Mid-client--jucMGGRSNhaA_C1");
     document.body.appendChild(script);
 
     return () => {
@@ -41,17 +40,11 @@ const PaymentPage = () => {
 
   return (
     <div className="payment-container">
-      <h1 className="payment-title">Pembayaran</h1>
-      <div className="payment-details">
-        <p className="payment-type">
-          <b>Tipe Produk:</b> {type}
-        </p>
-        <p className="payment-amount">
-          <b>Total Pembayaran:</b> Rp {amount.toLocaleString("id-ID")},-
-        </p>
-        <button className="payment-button" onClick={handlePayment}>
-          Bayar Sekarang
-        </button>
+      <h1>Pembayaran</h1>
+      <div>
+        <p><b>Tipe Produk:</b> {type}</p>
+        <p><b>Total Pembayaran:</b> Rp {amount.toLocaleString("id-ID")}</p>
+        <button onClick={handlePayment}>Bayar Sekarang</button>
       </div>
     </div>
   );

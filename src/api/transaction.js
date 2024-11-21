@@ -1,9 +1,9 @@
 import midtransClient from "midtrans-client";
 
 const snap = new midtransClient.Snap({
-  isProduction: false, // Ganti ke `true` jika menggunakan environment production
-  serverKey: "SB-Mid-server-wkTyIguA0OaTZ_DeSy13Iyrm", // Ganti dengan server key Midtrans Anda
-  clientKey: "SB-Mid-client--jucMGGRSNhaA_C1", // Ganti dengan client key Midtrans Anda
+  isProduction: false,
+  serverKey: "SB-Mid-server-wkTyIguA0OaTZ_DeSy13Iyrm",
+  clientKey: "SB-Mid-client--jucMGGRSNhaA_C1",
 });
 
 export default async function handler(req, res) {
@@ -30,10 +30,9 @@ export default async function handler(req, res) {
     };
 
     const transaction = await snap.createTransaction(transactionDetails);
-
     res.status(200).json({ token: transaction.token });
   } catch (error) {
-    console.error("Error creating transaction:", error);
+    console.error("Midtrans Error: ", error.response?.data || error.message);
     res.status(500).json({ message: "Failed to create transaction" });
   }
 }
