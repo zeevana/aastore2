@@ -31,7 +31,7 @@ const PaymentPage = () => {
   React.useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
-    script.setAttribute("data-client-key", "YOUR_CLIENT_KEY"); // Ganti dengan client key Midtrans Anda
+    script.setAttribute("data-client-key", "SB-Mid-client--jucMGGRSNhaA_C1"); // Ganti dengan client key Midtrans Anda
     document.body.appendChild(script);
 
     return () => {
