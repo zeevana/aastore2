@@ -9,7 +9,7 @@ const PaymentPage = () => {
 
   const handlePayment = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/create-transaction", {
+      const response = await axios.post("/api/create-transaction", {
         totalAmount: amount, // Jumlah yang akan dibayar
         type: type, // Jenis produk
       });
