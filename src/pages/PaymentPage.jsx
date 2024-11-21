@@ -1,6 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+ // Import file CSS untuk halaman ini
 
 const PaymentPage = () => {
   const location = useLocation();
@@ -39,11 +40,19 @@ const PaymentPage = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Pembayaran</h1>
-      <p>Tipe Produk: {type}</p>
-      <p>Total Pembayaran: Rp {amount.toLocaleString("id-ID")},-</p>
-      <button onClick={handlePayment}>Bayar Sekarang</button>
+    <div className="payment-container">
+      <h1 className="payment-title">Pembayaran</h1>
+      <div className="payment-details">
+        <p className="payment-type">
+          <b>Tipe Produk:</b> {type}
+        </p>
+        <p className="payment-amount">
+          <b>Total Pembayaran:</b> Rp {amount.toLocaleString("id-ID")},-
+        </p>
+        <button className="payment-button" onClick={handlePayment}>
+          Bayar Sekarang
+        </button>
+      </div>
     </div>
   );
 };
