@@ -1,33 +1,31 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { productData } from "../data/index";
 
-const ProductDetails = ({ product }) => {
+const ProductPage = () => {
   const navigate = useNavigate();
 
-  const handleSelectPrice = (priceItem) => {
-    navigate("/payment", {
-      state: {
-        amount: parseInt(priceItem.price.replace(/[^0-9]/g, "")), // Hapus format Rp dan koma
-        type: priceItem.type,
-      },
-    });
+  const handleBuy = (amount, type) => {
+    navigate("/payment", { state: { amount, type } });
   };
 
   return (
-    <div>
-      <h1>{product.title}</h1>
-      <div>
-        <h3>Harga:</h3>
-        {product.price.map((priceItem, index) => (
-          <div key={index}>
-            <p>{priceItem.type}</p>
-            <p>{priceItem.price}</p>
-            <button onClick={() => handleSelectPrice(priceItem)}>Pilih</button>
-          </div>
-        ))}
-      </div>
+    <div className="product-container">
+      {productData.map((product) => (
+        <div key={product.id} className="product-card">
+          <img src={product.image} alt={product.title} />
+          <h3>{product.title}</h3>
+          {product.price.map((item, index) => (
+            <div key={index} className="price-item">
+              <p>{item.type}</p>
+              <p>Rp {item.price.toLocaleString("id-ID")}</p>
+              <button onClick={() => handleBuy(item.price, item.type)}>Beli</button>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
 
-export default ProductDetails;
+export default ProductPage;
