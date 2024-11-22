@@ -1,8 +1,8 @@
 import midtransClient from "midtrans-client";
 
 const snap = new midtransClient.Snap({
-  isProduction: false,
-  serverKey: "SB-Mid-server-wkTyIguA0OaTZ_DeSy13Iyrm",
+  isProduction: false, // Ubah ke true jika menggunakan server produksi
+  serverKey: "SB-Mid-server-wkTyIguA0OaTZ_DeSy13Iyrm", // Ganti dengan server key Anda
 });
 
 export default async function handler(req, res) {
@@ -11,19 +11,42 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { totalAmount } = req.body;
+    const { totalAmount, type } = req.body;
+
+    // Validasi input
+    if (!totalAmount || typeof totalAmount !== "number" || totalAmount <= 0) {
+      return res.status(400).json({ error: "Invalid totalAmount" });
+    }
+
+    if (!type || typeof type !== "string") {
+      return res.status(400).json({ error: "Invalid type" });
+    }
 
     const transactionDetails = {
       transaction_details: {
         order_id: `ORDER-${Date.now()}`,
         gross_amount: totalAmount,
       },
+      item_details: [
+        {
+          id: 1,
+          price: totalAmount,
+          quantity: 1,
+          name: type,
+        },
+      ],
+      customer_details: {
+        first_name: "Customer",
+        last_name: "Name",
+        email: "customer@example.com",
+        phone: "08123456789",
+      },
     };
 
     const transaction = await snap.createTransaction(transactionDetails);
-    res.status(200).json(transaction);
+    res.status(200).json({ token: transaction.token });
   } catch (error) {
-    console.error("Midtrans Error:", error.message);
+    console.error("Midtrans Error:", error.response?.data || error.message);
     res.status(500).json({ error: "Failed to create transaction" });
   }
 }

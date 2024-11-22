@@ -1,19 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 const PaymentPage = () => {
   const location = useLocation();
-  const { amount, type } = location.state || { amount: 0, type: "Tidak ada tipe" };
+  const { amount = 0, type = "Unknown" } = location.state || {};
 
   const handlePayment = async () => {
     try {
+      if (amount <= 0) {
+        alert("Jumlah pembayaran tidak valid.");
+        return;
+      }
+
       const response = await axios.post("/api/transaction", {
         totalAmount: amount,
         type: type,
       });
 
       const snapToken = response.data.token;
+
+      if (!snapToken) {
+        alert("Gagal mendapatkan token pembayaran.");
+        return;
+      }
 
       window.snap.pay(snapToken, {
         onSuccess: (result) => alert("Transaksi berhasil! " + JSON.stringify(result)),
@@ -27,10 +37,15 @@ const PaymentPage = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
-    script.setAttribute("data-client-key", "SB-Mid-client--jucMGGRSNhaA_C1");
+    script.setAttribute("data-client-key", "SB-Mid-client--jucMGGRSNhaA_C1"); // Ganti dengan client key Anda
+    script.async = true;
+
+    script.onload = () => console.log("Snap.js berhasil dimuat");
+    script.onerror = () => console.error("Snap.js gagal dimuat");
+
     document.body.appendChild(script);
 
     return () => {
