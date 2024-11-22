@@ -13,12 +13,15 @@ export default async function handler(req, res) {
   try {
     const { totalAmount, type } = req.body;
 
-    // Validasi input
+    console.log("Incoming request:", { totalAmount, type });
+
     if (!totalAmount || typeof totalAmount !== "number" || totalAmount <= 0) {
+      console.error("Invalid totalAmount:", totalAmount);
       return res.status(400).json({ error: "Invalid totalAmount" });
     }
 
     if (!type || typeof type !== "string") {
+      console.error("Invalid type:", type);
       return res.status(400).json({ error: "Invalid type" });
     }
 
@@ -43,7 +46,11 @@ export default async function handler(req, res) {
       },
     };
 
+    console.log("Transaction Details:", transactionDetails);
+
     const transaction = await snap.createTransaction(transactionDetails);
+    console.log("Transaction Token:", transaction.token);
+
     res.status(200).json({ token: transaction.token });
   } catch (error) {
     console.error("Midtrans Error:", error.response?.data || error.message);

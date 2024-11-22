@@ -12,19 +12,21 @@ const PaymentPage = () => {
         alert("Jumlah pembayaran tidak valid.");
         return;
       }
-
+  
+      console.log("Sending request to API with:", { amount, type });
+  
       const response = await axios.post("/api/transaction", {
         totalAmount: amount,
         type: type,
       });
-
+  
       const snapToken = response.data.token;
-
+  
       if (!snapToken) {
         alert("Gagal mendapatkan token pembayaran.");
         return;
       }
-
+  
       window.snap.pay(snapToken, {
         onSuccess: (result) => alert("Transaksi berhasil! " + JSON.stringify(result)),
         onPending: (result) => alert("Transaksi pending: " + JSON.stringify(result)),
@@ -36,6 +38,7 @@ const PaymentPage = () => {
       alert("Gagal membuat transaksi.");
     }
   };
+  
 
   useEffect(() => {
     const script = document.createElement("script");
