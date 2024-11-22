@@ -1,59 +1,61 @@
-import midtransClient from "midtrans-client";
-
-const snap = new midtransClient.Snap({
-  isProduction: false, // Ubah ke true jika menggunakan server produksi
-  serverKey: "SB-Mid-server-wkTyIguA0OaTZ_DeSy13Iyrm", // Ganti dengan server key Anda
-});
+import midtransClient from 'midtrans-client';
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method Not Allowed" });
-  }
+    if (req.method === 'POST') {
+        try {
+            const { price, type } = req.body;
 
-  try {
-    const { totalAmount, type } = req.body;
+            // Pastikan data price dan type ada dan valid
+            if (!price || !type) {
+                return res.status(400).json({ error: 'Price and type are required' });
+            }
 
-    console.log("Incoming request:", { totalAmount, type });
+            // Konfigurasi Midtrans menggunakan kunci langsung (tanpa menggunakan .env)
+            const snap = new midtransClient.Snap({
+                isProduction: false,  // Gunakan false untuk sandbox
+                serverKey: 'SB-Mid-server-wkTyIguA0OaTZ_DeSy13Iyrm',  // Ganti dengan Server Key Anda
+                clientKey: 'SB-Mid-client--jucMGGRSNhaA_C1'   // Ganti dengan Client Key Anda
+            });
 
-    if (!totalAmount || typeof totalAmount !== "number" || totalAmount <= 0) {
-      console.error("Invalid totalAmount:", totalAmount);
-      return res.status(400).json({ error: "Invalid totalAmount" });
+            // Proses harga (pastikan harga diproses dengan benar, menghapus simbol dan koma)
+            const cleanPrice = parseInt(price.replace('Rp', '').replace('.', '').replace(',', '').trim());
+
+            // Validasi jika harga bersih tidak valid
+            if (isNaN(cleanPrice) || cleanPrice <= 0) {
+                return res.status(400).json({ error: 'Invalid price format' });
+            }
+
+            // Siapkan parameter untuk transaksi
+            const parameter = {
+                transaction_details: {
+                    order_id: 'order-id-' + new Date().getTime(),  // Membuat order_id unik berdasarkan waktu
+                    gross_amount: cleanPrice  // Harga bersih tanpa simbol Rp dan titik
+                },
+                credit_card: {
+                    secure: true  // Mengaktifkan opsi pembayaran kartu kredit yang aman
+                },
+                item_details: [
+                    {
+                        id: 'item-1',  // ID produk, bisa disesuaikan jika ada banyak item
+                        name: type,  // Nama item dari parameter 'type'
+                        price: cleanPrice,  // Harga item bersih
+                        quantity: 1  // Jumlah item (1 item)
+                    }
+                ]
+            };
+
+            // Buat transaksi di Midtrans
+            const transaction = await snap.createTransaction(parameter);
+
+            // Kirimkan URL untuk melanjutkan ke halaman pembayaran Midtrans
+            res.status(200).json({ redirect_url: transaction.redirect_url });
+        } catch (error) {
+            // Tangani kesalahan dengan log yang lebih informatif
+            console.error('Error creating payment:', error);
+            res.status(500).json({ error: 'Failed to create payment, please try again later.' });
+        }
+    } else {
+        // Jika bukan POST request, kirimkan status 405 Method Not Allowed
+        res.status(405).send('Method Not Allowed');
     }
-
-    if (!type || typeof type !== "string") {
-      console.error("Invalid type:", type);
-      return res.status(400).json({ error: "Invalid type" });
-    }
-
-    const transactionDetails = {
-      transaction_details: {
-        order_id: `ORDER-${Date.now()}`,
-        gross_amount: totalAmount,
-      },
-      item_details: [
-        {
-          id: 1,
-          price: totalAmount,
-          quantity: 1,
-          name: type,
-        },
-      ],
-      customer_details: {
-        first_name: "Customer",
-        last_name: "Name",
-        email: "customer@example.com",
-        phone: "08123456789",
-      },
-    };
-
-    console.log("Transaction Details:", transactionDetails);
-
-    const transaction = await snap.createTransaction(transactionDetails);
-    console.log("Transaction Token:", transaction.token);
-
-    res.status(200).json({ token: transaction.token });
-  } catch (error) {
-    console.error("Midtrans Error:", error.response?.data || error.message);
-    res.status(500).json({ error: "Failed to create transaction" });
-  }
 }
