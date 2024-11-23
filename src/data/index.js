@@ -68,20 +68,15 @@ export const semuaKelas = [
   {
     id: 1,
     image: KelasImage1,
-    star1: "fa-solid fa-star",
-    star2: "fa-solid fa-star",
-    star3: "fa-solid fa-star",
-    star4: "fa-solid fa-star",
-    star5: "fa-solid fa-star-half-stroke",
     title: "Ghensin Impact",
     price: [
-      { type: "moon x1", price: "Rp 62.000,-", image:Welkin},
-      { type: "moon x2", price: "Rp 122.000,-", image:Welkin },
-      { type: "moon x3", price: "Rp 182.000,-", image:Welkin },
-      { type: "moon x4", price: "Rp 240.000,-", image:Welkin },
-      { type: "moon x5", price: "Rp 300.000,-", image:Welkin },
+      { type: "moon x1", price: 62000, image: Welkin },
+      { type: "moon x2", price: 122000, image: Welkin },
+      { type: "moon x3", price: 182000, image: Welkin },
+      { type: "moon x4", price: 240000, image: Welkin },
+      { type: "moon x5", price: 300000, image: Welkin },
     ],
-    category:['game_pc','game_android', 'game_populer'],
+    category: ['game_pc', 'game_android', 'game_populer'],
     delay: "1300",
   },
   {
@@ -94,17 +89,17 @@ export const semuaKelas = [
     star5: "fa-solid fa-star",
     title: "Free Fire",
     price: [
-      { type: "70 dm", price: "Rp 10.000,-", image:Diamond },
-      { type: "100 dm", price: "Rp 15.0000,-", image:Diamond  },
-      { type: "140 dm", price: "Rp 22.000,-", image:Diamond  },
-      { type: "210 dm", price: "Rp 32.000,-", image:Diamond  },
-      { type: "280 dm", price: "Rp 42.000,-", image:Diamond  },
-      { type: "355 dm", price: "Rp 52.000,-", image:Diamond  },
-      { type: "420 dm", price: "Rp 62.000,-", image:Diamond  },
-      { type: "500 dm", price: "Rp 72.000,-", image:Diamond  },
-      { type: "720 dm", price: "Rp 100.000,-", image:Diamond  },
+      { type: "70", price: 10000, image: Diamond },
+      { type: "100", price: 15000, image: Diamond },
+      { type: "140", price: 20000, image: Diamond },
+      { type: "210", price: 32000, image: Diamond },
+      { type: "280", price: 42000, image: Diamond },
+      { type: "355", price: 52000, image: Diamond },
+      { type: "420", price: 62000, image: Diamond },
+      { type: "500", price: 72000, image: Diamond },
+      { type: "720", price: 100000, image: Diamond },
     ],
-    category:["game_populer", "game_android"],
+    category: ["game_populer", "game_android"],
     delay: "1600",
   },
   {
@@ -117,18 +112,17 @@ export const semuaKelas = [
     star5: "fa-solid fa-star",
     title: "Mobile Legend",
     price: [
-      
-    { type: "28 dm", price: "Rp 8.000,-", image:Diamond  },
-    { type: "85 dm", price: "Rp 23.000,-", image:Diamond  },
-    { type: "110 dm", price: "Rp 32.000,-", image:Diamond  },
-    { type: "277 dm", price: "Rp 76.000,-", image:Diamond  },
-    { type: "568 dm", price: "Rp 155.000,-", image:Diamond  },
-    { type: "642 dm", price: "Rp 175.000,-", image:Diamond  },
-    { type: "716 dm", price: "Rp 195.000,-", image:Diamond  },
-    { type: "845 dm", price: "Rp 235.000,-", image:Diamond  },
-    { type: "2232 dm", price: "Rp 570.000,-", image:Diamond  },
-  ],
-    category:["game_android", 'game_populer'],
+      { type: "28 dm", price: 8000, image: Diamond },
+      { type: "85 dm", price: 23000, image: Diamond },
+      { type: "110 dm", price: 32000, image: Diamond },
+      { type: "277 dm", price: 76000, image: Diamond },
+      { type: "568 dm", price: 155000, image: Diamond },
+      { type: "642 dm", price: 175000, image: Diamond },
+      { type: "716 dm", price: 195000, image: Diamond },
+      { type: "845 dm", price: 235000, image: Diamond },
+      { type: "2232 dm", price: 570000, image: Diamond },
+    ],
+    category: ["game_android", 'game_populer'],
     delay: "1900",
   },
   {
@@ -141,11 +135,12 @@ export const semuaKelas = [
     star5: "fa-solid fa-star",
     title: "PUBG Mobile",
     price: [
-    { type: "60", price: "14000", image:Uc },
-    { type: "325", price: "66000", image:Uc },
-    { type: "660 uc", price: "Rp 129.000,-", image:Uc },
-    { type: "1800 uc", price: "Rp 330.000,-", image:Uc },],
-    category:["game_populer", 'game_android'],
+      { type: "60 uc", price: 14000, image: Uc },
+      { type: "325 uc", price: 66000, image: Uc },
+      { type: "660 uc", price: 129000, image: Uc },
+      { type: "1800 uc", price: 330000, image: Uc },
+    ],
+    category: ["game_populer", 'game_android'],
     delay: "",
   },
   {
@@ -158,10 +153,11 @@ export const semuaKelas = [
     star5: "fa-solid fa-star",
     title: "Roblox",
     price: [
-    { type: "2000 Robux", price: "Rp 378.000,-" },
-    { type: "4500 Robux", price: "Rp 800.000,-" },
-    { type: "10.000 Robux", price: "Rp 1.550.000,-" }],
-    category:"game_populer",
+      { type: "2000 Robux", price: 378000 },
+      { type: "4500 Robux", price: 800000 },
+      { type: "10.000 Robux", price: 1550000 },
+    ],
+    category: "game_populer",
     delay: "300",
   },
   {
@@ -174,10 +170,11 @@ export const semuaKelas = [
     star5: "fa-solid fa-star",
     title: "Valorant",
     price: [
-    { type: "moon x1", price: 100000 },
-    { type: "moon x2", price: 200000 },
-    { type: "moon x3", price: 300000 }],
-    category:"game_pc",
+      { type: "moon x1", price: 100000 },
+      { type: "moon x2", price: 200000 },
+      { type: "moon x3", price: 300000 },
+    ],
+    category: "game_pc",
     delay: "600",
   },
   {
@@ -189,10 +186,12 @@ export const semuaKelas = [
     star4: "fa-solid fa-star",
     star5: "fa-solid fa-star-half-stroke",
     title: "Clash of Clans ",
-    price: [{ type: "moon x1", price: 100000 },
-    { type: "moon x2", price: 200000 },
-    { type: "moon x3", price: 300000 }],
-    category:"game_populer",
+    price: [
+      { type: "moon x1", price: 100000 },
+      { type: "moon x2", price: 200000 },
+      { type: "moon x3", price: 300000 },
+    ],
+    category: "game_populer",
     delay: "",
   },
   {
@@ -204,10 +203,12 @@ export const semuaKelas = [
     star4: "fa-solid fa-star",
     star5: "fa-solid fa-star-half-stroke",
     title: "Undawn",
-    price: [{ type: "moon x1", price: 100000 },
-    { type: "moon x2", price: 200000 },
-    { type: "moon x3", price: 300000 }],
-    category:"game_populer",
+    price: [
+      { type: "moon x1", price: 100000 },
+      { type: "moon x2", price: 200000 },
+      { type: "moon x3", price: 300000 },
+    ],
+    category: "game_populer",
     delay: "300",
   },
   {
@@ -219,13 +220,16 @@ export const semuaKelas = [
     star4: "fa-solid fa-star",
     star5: "fa-solid fa-star-half-stroke",
     title: "Black Clover",
-    price: [{ type: "moon x1", price: 100000 },
-    { type: "moon x2", price: 200000 },
-    { type: "moon x3", price: 300000 }],
-    category:"game_android",
+    price: [
+      { type: "moon x1", price: 100000 },
+      { type: "moon x2", price: 200000 },
+      { type: "moon x3", price: 300000 },
+    ],
+    category: "game_android",
     delay: "600",
   },
 ];
+
 
 export const kelasTerbaru = [
   {
@@ -467,8 +471,8 @@ export const priceList = [
 ];
 
 export const ff = [
-  { id: 1, item: "dm 70", price: "Rp 10.000" },
-  { id: 2, item: "dm 100", price: "Rp 15.000" },
+  { id: 1, item: "70", price: "10000" },
+  { id: 2, item: "100", price: "15000" },
   { id: 3, item: "dm 140", price: "Rp 22.000" },
   { id: 4, item: "dm 210", price: "Rp 32.000" },
   { id: 5, item: "dm 280", price: "Rp 42.000" },
@@ -489,3 +493,56 @@ export const ml = [
   { id: 6, item: "dm 716", price: "Rp 195.000" },
 ];
 
+export const tryPage = [
+  {
+    id: "genshin",
+    title: "Ghensin Impact",
+    image: "/images/genshin.jpg",
+    items: [
+      {
+        id: "moon-x1",
+        type: "moon x1",
+        price: 62000,
+        image: "/images/moon.png"
+      },
+      {
+        id: "moon-x2",
+        type: "moon x2", 
+        price: 122000,
+        image: "/images/moon.png"
+      },
+      {
+        id: "moon-x3",
+        type: "moon x3",
+        price: 182000,
+        image: "/images/moon.png"
+      }
+    ]
+  },
+  {
+    id: "freefire",
+    title: "Free Fire",
+    image: "/images/freefire.jpg",
+    items: [
+      {
+        id: "diamond-70",
+        type: "70",
+        price: 10000,
+        image: "/images/diamond.png"
+      },
+      {
+        id: "diamond-100",
+        type: "100",
+        price: 15000,
+        image: "/images/diamond.png"
+      },
+      {
+        id: "diamond-140",
+        type: "140",
+        price: 20000,
+        image: "/images/diamond.png"
+      }
+    ]
+  },
+ 
+];

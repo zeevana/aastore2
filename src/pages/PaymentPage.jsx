@@ -1,68 +1,120 @@
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PaymentPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const { amount = 0, type = "Unknown" } = location.state || {};
+
+  // Data yang dikirim melalui navigasi
+  const { state } = location;
+  const { harga, kelas } = state || {};
+
+  // State untuk loading, error, dan pembayaran
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handlePayment = async () => {
+    if (isProcessing || !harga || !kelas) return; // Cegah panggilan ganda
+    setIsProcessing(true); // Tandai sebagai sedang diproses
+    setError(null);
+  
     try {
-      if (amount <= 0) {
-        alert("Jumlah pembayaran tidak valid.");
-        return;
-      }
-  
-      console.log("Sending request to API with:", { amount, type });
-  
-      const response = await axios.post("/api/transaction", {
-        totalAmount: amount,
-        type: type,
+      const response = await fetch("/api/create-transaction", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: kelas.id,
+          type: harga.type,
+          price: String(harga.price),
+        }),
       });
   
-      const snapToken = response.data.token;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Terjadi kesalahan saat memproses pembayaran");
+      }
   
-      if (!snapToken) {
+      const data = await response.json();
+  
+      if (data.token) {
+        // Pastikan token valid
+        window.snap.pay(data.token, {
+          onSuccess: (result) => {
+            console.log("Success:", result);
+            alert("Pembayaran berhasil!");
+          },
+          onPending: (result) => {
+            console.log("Pending:", result);
+            alert("Pembayaran tertunda.");
+          },
+          onError: (error) => {
+            console.error("Error:", error);
+            alert("Pembayaran gagal.");
+          },
+          onClose: () => {
+            alert("Anda menutup halaman pembayaran.");
+          },
+        });
+      } else {
+        console.error("Token pembayaran tidak ditemukan.");
         alert("Gagal mendapatkan token pembayaran.");
-        return;
       }
-  
-      window.snap.pay(snapToken, {
-        onSuccess: (result) => alert("Transaksi berhasil! " + JSON.stringify(result)),
-        onPending: (result) => alert("Transaksi pending: " + JSON.stringify(result)),
-        onError: (result) => alert("Terjadi kesalahan: " + JSON.stringify(result)),
-        onClose: () => alert("Pembayaran dibatalkan"),
-      });
     } catch (error) {
-      console.error("Error creating transaction:", error);
-      alert("Gagal membuat transaksi.");
+      console.error("Error:", error);
+      setError(error.message);
+    } finally {
+      setIsProcessing(false); // Reset flag setelah transaksi selesai
     }
   };
   
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
-    script.setAttribute("data-client-key", "SB-Mid-client--jucMGGRSNhaA_C1"); // Ganti dengan client key Anda
-    script.async = true;
-
-    script.onload = () => console.log("Snap.js berhasil dimuat");
-    script.onerror = () => console.error("Snap.js gagal dimuat");
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  // Jika data tidak ditemukan, tampilkan pesan error
+  if (!harga || !kelas) {
+    return (
+      <div className="error-container">
+        <p>Data pembayaran tidak ditemukan.</p>
+        <button onClick={() => navigate(-1)}>Kembali</button>
+      </div>
+    );
+  }
 
   return (
     <div className="payment-container">
-      <h1>Pembayaran</h1>
-      <div>
-        <p><b>Tipe Produk:</b> {type}</p>
-        <p><b>Total Pembayaran:</b> Rp {amount.toLocaleString("id-ID")}</p>
-        <button onClick={handlePayment}>Bayar Sekarang</button>
+      <div className="payment-card">
+        <h2 className="payment-title">Detail Pembayaran</h2>
+
+        <div className="payment-info">
+          <div className="product-preview">
+            <img src={kelas.image} alt={kelas.title} className="payment-image" />
+            <h3 className="product-name">{kelas.title}</h3>
+          </div>
+
+          <div className="payment-details">
+            <div className="detail-item">
+              <span className="detail-label">Item:</span>
+              <span className="detail-value">{harga.type}</span>
+            </div>
+            <div className="detail-item">
+              <span className="detail-label">Harga:</span>
+              <span className="detail-value price">
+                Rp {harga.price.toLocaleString("id-ID")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {error && <div className="error-message">{error}</div>}
+        <button
+          className="payment-button"
+          onClick={handlePayment}
+          disabled={loading}
+        >
+          {loading ? "Memproses Pembayaran..." : "Bayar Sekarang"}
+        </button>
       </div>
     </div>
   );
